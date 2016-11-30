@@ -33,11 +33,7 @@
 %% @doc
 %% @end
 %%--------------------------------------------------------------------
--spec save(knm_number:knm_number()) -> knm_number:knm_number();
-          (knm_numbers:collection()) -> knm_numbers:collection().
-save(T=#{todo := Ns}) ->
-    NewNs = [save(N) || N <- Ns],
-    knm_numbers:ok(NewNs, T);
+-spec save(knm_number:knm_number()) -> knm_number:knm_number().
 save(Number) ->
     exec(Number, 'save').
 
@@ -199,11 +195,19 @@ cnam_provider(AccountId) -> ?CNAM_PROVIDER(AccountId).
 %% @end
 %%--------------------------------------------------------------------
 -type exec_action() :: 'save' | 'delete'.
--spec exec(knm_number:knm_number(), exec_action()) ->
-                  knm_number:knm_number().
+-spec exec(knm_number:knm_number(), exec_action()) -> knm_number:knm_number();
+          (knm_numbers:collection(), exec_action()) -> knm_numbers:collection().
 -spec exec(knm_number:knm_number(), exec_action(), ne_binaries()) ->
                   knm_number:knm_number().
 
+exec(T0=#{todo := Ns}, Action) ->
+    F = fun (N, T) ->
+                case knm_number:attempt(fun exec/2, [N, Action]) of
+                    {ok, NewN} -> knm_numbers:ok(NewN, T);
+                    {error, R} -> knm_numbers:ko(N, R, T)
+                end
+        end,
+    lists:foldl(F, T0, Ns);
 exec(Number, Action) ->
     Number1 = fix_old_fields_names(Number),
     exec(Number1, Action, provider_modules(Number)).
