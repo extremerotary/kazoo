@@ -146,6 +146,9 @@ to_json('not_reconcilable', Num=?NE_BINARY, _) ->
 to_json('unauthorized', _, Cause) ->
     Message = <<"requestor is unauthorized to perform operation">>,
     build_error(403, 'forbidden', Message, Cause);
+to_json('service_restriction', _, Cause) ->
+    Message = <<"service restriction">>,
+    build_error(400, 'service_restriction', Message, Cause);
 to_json('no_change_required', _, Cause) ->
     Message = <<"no change required">>,
     build_error(400, 'no_change_required', Message, Cause);
