@@ -804,7 +804,10 @@ set_module_name(N0, Name, IsBillable)
                               }
     end;
 set_module_name(N0, Name, 'undefined') ->
-    set_module_name(N0, Name).
+    N = set_module_name(N0, Name),
+    N#knm_phone_number{is_dirty = true
+                      ,is_billable = knm_carriers:is_number_billable(N)
+                      }.
 
 %%--------------------------------------------------------------------
 %% @public
