@@ -165,6 +165,19 @@
                 }
             },
             "type": "object"
+        },
+        "prepend": {
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "type": "string"
+                }
+            },
+            "type": "object"
         }
     },
     "type": "object"
