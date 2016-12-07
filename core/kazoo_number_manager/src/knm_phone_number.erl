@@ -654,9 +654,12 @@ feature(Number, Feature) ->
 
 -spec set_feature(knm_phone_number(), ne_binary(), kz_json:json_term()) ->
                          knm_phone_number().
-set_feature(N, Feature=?NE_BINARY, Data) ->
-    Features = kz_json:set_value(Feature, Data, features(N)),
-    set_features(N, Features). %% Sets is_dirty.
+set_feature(N0, Feature=?NE_BINARY, Data) ->
+    Features = kz_json:set_value(Feature, Data, features(N0)),
+    N = set_features(N0, Features),
+    N#knm_phone_number.is_dirty
+        andalso lager:debug("setting ~s feature ~s: ~s", [number(N), Feature, kz_json:encode(Data)]),
+    N.
 
 %%--------------------------------------------------------------------
 %% @public
