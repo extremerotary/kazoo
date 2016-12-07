@@ -145,6 +145,9 @@ fetch(?TEST_OLD_NUM, Options) ->
 fetch(?TEST_OLD2_NUM, Options) ->
     JObj = kz_json:decode(list_to_binary(knm_util:fixture("old_vsn_2_in.json"))),
     handle_fetched_result(JObj, Options);
+fetch(?TEST_OLD3_NUM, Options) ->
+    JObj = kz_json:decode(list_to_binary(knm_util:fixture("old_vsn_3_in.json"))),
+    handle_fetched_result(JObj, Options);
 fetch(_DID, _Options) ->
     {'error', 'not_found'}.
 -else.
