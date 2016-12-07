@@ -394,7 +394,7 @@ features_fold(?FEATURE_RINGBACK, Acc, JObj) ->
     kz_json:set_value(?FEATURE_RINGBACK, Data, Acc);
 features_fold(?FEATURE_PREPEND, Acc, JObj) ->
     Name = kz_json:get_ne_value([?FEATURE_PREPEND, <<"name">>], JObj),
-    Data = kz_json:from_list([{<<"enabled">>, true}
+    Data = kz_json:from_list([{<<"enabled">>, kz_json:is_true([?FEATURE_PREPEND, <<"enabled">>], JObj)}
                              ,{<<"name">>, Name}
                              ]),
     kz_json:set_value(?FEATURE_PREPEND, Data, Acc);
