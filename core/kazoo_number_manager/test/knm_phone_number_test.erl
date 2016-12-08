@@ -265,14 +265,99 @@ is_dirty3_test_() ->
     ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, JObj)))
     ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, NewJObj)))
 
-    ,?_assertEqual(true, kz_json:are_equal(kz_json:get_value(<<"pvt_features">>, OldJObj)
-                                          ,kz_json:get_value(<<"pvt_features">>, JObj)
-                                          ))
-    ,?_assertEqual(true, kz_json:are_equal(kz_json:get_value(<<"pvt_features">>, OldJObj)
-                                          ,kz_json:get_value(<<"pvt_features">>, NewJObj)
-                                          ))
+    ,?_assertEqual(kz_json:to_map(kz_json:get_value(<<"pvt_features">>, OldJObj))
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, JObj)))
+    ,?_assertEqual(kz_json:to_map(kz_json:get_value(<<"pvt_features">>, OldJObj))
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, NewJObj)))
 
     ,?_assertEqual(<<"callflow">>, kz_json:get_value(<<"used_by">>, OldJObj))
     ,?_assertEqual(<<"callflow">>, kz_json:get_value(<<"pvt_used_by">>, JObj))
     ,?_assertEqual(<<"callflow">>, kz_json:get_value(<<"pvt_used_by">>, NewJObj))
+    ].
+
+
+is_dirty4_test_() ->
+    {ok, OldPN} = knm_phone_number:fetch(?TEST_OLD4_NUM),
+    JObj = knm_phone_number:to_json(OldPN),
+    NewJObj = kz_json:decode(list_to_binary(knm_util:fixture("old_vsn_4_out.json"))),
+    OldJObj = kz_json:decode(list_to_binary(knm_util:fixture("old_vsn_4_in.json"))),
+    [?_assertEqual(kz_json:get_value(<<"pvt_assigned_to">>, NewJObj)
+                  ,kz_json:get_value(<<"pvt_assigned_to">>, JObj)
+                  )
+    ,?_assertEqual(kz_json:get_value(<<"pvt_assigned_to">>, OldJObj)
+                  ,kz_json:get_value(<<"pvt_assigned_to">>, JObj)
+                  )
+
+    ,?_assertEqual(kz_json:get_value(<<"pvt_db_name">>, NewJObj)
+                  ,kz_json:get_value(<<"pvt_db_name">>, JObj)
+                  )
+    ,?_assertEqual(kz_json:get_value(<<"pvt_db_name">>, OldJObj)
+                  ,kz_json:get_value(<<"pvt_db_name">>, JObj)
+                  )
+
+    ,?_assertEqual(kz_json:get_value(<<"pvt_reserve_history">>, NewJObj)
+                  ,kz_json:get_value(<<"pvt_reserve_history">>, JObj)
+                  )
+    ,?_assertEqual(kz_json:get_value(<<"pvt_reserve_history">>, OldJObj)
+                  ,kz_json:get_value(<<"pvt_reserve_history">>, JObj)
+                  )
+
+    ,?_assertEqual(kz_json:get_value(<<"pvt_type">>, NewJObj)
+                  ,kz_json:get_value(<<"pvt_type">>, JObj)
+                  )
+    ,?_assertEqual(kz_json:get_value(<<"pvt_type">>, OldJObj)
+                  ,kz_json:get_value(<<"pvt_type">>, JObj)
+                  )
+
+    ,?_assertEqual(kz_json:get_value(<<"_id">>, NewJObj)
+                  ,kz_json:get_value(<<"_id">>, JObj)
+                  )
+    ,?_assertEqual(kz_json:get_value(<<"_id">>, OldJObj)
+                  ,kz_json:get_value(<<"_id">>, JObj)
+                  )
+
+    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_features_available">>, OldJObj))
+    ,?_assertEqual(?FEATURES_AVAILABLE, kz_json:get_value(<<"pvt_features_available">>, JObj))
+    ,?_assertEqual(?FEATURES_AVAILABLE, kz_json:get_value(<<"pvt_features_available">>, NewJObj))
+
+    ,?_assertEqual(<<"wnm_local">>, kz_json:get_value(<<"pvt_module_name">>, OldJObj))
+    ,?_assertEqual(<<"knm_local">>, kz_json:get_value(<<"pvt_module_name">>, JObj))
+    ,?_assertEqual(<<"knm_local">>, kz_json:get_value(<<"pvt_module_name">>, NewJObj))
+
+    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_ported_in">>, OldJObj))
+    ,?_assertEqual(false, kz_json:get_value(<<"pvt_ported_in">>, JObj))
+    ,?_assertEqual(false, kz_json:get_value(<<"pvt_ported_in">>, NewJObj))
+
+    ,?_assertEqual(<<"reserved">>, kz_json:get_value(<<"pvt_number_state">>, OldJObj))
+    ,?_assertEqual(<<"reserved">>, kz_json:get_value(<<"pvt_state">>, JObj))
+    ,?_assertEqual(<<"reserved">>, kz_json:get_value(<<"pvt_state">>, NewJObj))
+
+    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_is_billable">>, OldJObj))
+    ,?_assertEqual(false, kz_json:get_value(<<"pvt_is_billable">>, JObj))
+    ,?_assertEqual(false, kz_json:get_value(<<"pvt_is_billable">>, NewJObj))
+
+    ,?_assertEqual(63627551737, kz_json:get_value(<<"pvt_created">>, OldJObj))
+    ,?_assertEqual(63627551737, kz_json:get_value(<<"pvt_created">>, JObj))
+    ,?_assertEqual(63627551737, kz_json:get_value(<<"pvt_created">>, NewJObj))
+
+    ,?_assertEqual(63627551739, kz_json:get_value(<<"pvt_modified">>, OldJObj))
+    ,?_assertNotEqual(63627551739, kz_json:get_value(<<"pvt_modified">>, JObj))
+    ,?_assertNotEqual(63627551739, kz_json:get_value(<<"pvt_modified">>, NewJObj))
+    ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, JObj)))
+    ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, NewJObj)))
+
+    ,?_assertEqual([], kz_json:get_value(<<"pvt_features">>, OldJObj))
+    ,?_assertEqual(#{<<"local">> => #{}}
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, JObj)))
+    ,?_assertEqual(#{<<"local">> => #{}}
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, NewJObj)))
+
+    ,?_assertEqual(<<>>, kz_json:get_value(<<"used_by">>, OldJObj))
+    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_used_by">>, JObj))
+    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_used_by">>, NewJObj))
+
+    ,?_assertEqual(kz_json:to_map(kz_json:public_fields(kz_json:delete_key(<<"used_by">>, OldJObj)))
+                  ,kz_json:to_map(kz_json:public_fields(JObj)))
+    ,?_assertEqual(kz_json:to_map(kz_json:public_fields(kz_json:delete_key(<<"used_by">>, OldJObj)))
+                  ,kz_json:to_map(kz_json:public_fields(NewJObj)))
     ].
