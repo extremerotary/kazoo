@@ -66,6 +66,7 @@
 -define(TEST_OLD2_NUM, <<"+12014370855">>).
 -define(TEST_OLD3_NUM, <<"+14082141750">>).
 -define(TEST_OLD4_NUM, <<"+14242424247">>).
+-define(TEST_OLD5_NUM, <<"+19377038880">>).
 
 -define(MASTER_ACCOUNT_ID,   <<"master_account_6992af0e9504d0b27">>).
 -define(RESELLER_ACCOUNT_ID, <<"reseller_account_b113394f16cb76d">>).
