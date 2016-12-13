@@ -1,9 +1,6 @@
 {
     "_id": "+14082141750",
     "_rev": "5-d8c63d6bdc3e8376e9ffe157904ce114",
-    "cnam": {
-        "display_name": "someName"
-    },
     "e911": {
         "extended_address": "",
         "locality": "SAN FRANCISCO",
@@ -29,8 +26,12 @@
     "pvt_created": 63646110391,
     "pvt_db_name": "numbers%2F%2B1408",
     "pvt_features": {
-        "outbound_cnam": {
-            "display_name": "someName"
+        "e911": {
+            "extended_address": "",
+            "locality": "SAN FRANCISCO",
+            "postal_code": "94108-5630",
+            "region": "CA",
+            "street_address": "140 GEARY ST"
         }
     },
     "pvt_features_available": [

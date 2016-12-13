@@ -235,9 +235,12 @@ is_dirty3_test_() ->
                   ,kz_json:get_value(<<"_id">>, JObj)
                   )
 
-    ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_features_available">>, OldJObj))
-    ,?_assertEqual(?FEATURES_AVAILABLE, kz_json:get_value(<<"pvt_features_available">>, JObj))
-    ,?_assertEqual(?FEATURES_AVAILABLE, kz_json:get_value(<<"pvt_features_available">>, NewJObj))
+    ,?_assertEqual(lists:usort([<<"dash_e911">>, <<"vitelity_e911">>]++?FEATURES_AVAILABLE)
+                  ,lists:usort(kz_json:get_value(<<"pvt_features_available">>, OldJObj)))
+    ,?_assertEqual(?FEATURES_AVAILABLE
+                  ,lists:usort(kz_json:get_value(<<"pvt_features_available">>, JObj)))
+    ,?_assertEqual(?FEATURES_AVAILABLE
+                  ,lists:usort(kz_json:get_value(<<"pvt_features_available">>, NewJObj)))
 
     ,?_assertEqual(<<"knm_bandwidth2">>, kz_json:get_value(<<"pvt_module_name">>, OldJObj))
     ,?_assertEqual(<<"knm_bandwidth2">>, kz_json:get_value(<<"pvt_module_name">>, JObj))
