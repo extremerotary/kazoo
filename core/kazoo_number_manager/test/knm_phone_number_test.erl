@@ -359,45 +359,25 @@ is_dirty4_test_() ->
     ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_used_by">>, JObj))
     ,?_assertEqual(undefined, kz_json:get_value(<<"pvt_used_by">>, NewJObj))
 
-    ,?_assertEqual(kz_json:to_map(kz_json:public_fields(kz_json:delete_key(<<"used_by">>, OldJObj)))
-                  ,kz_json:to_map(kz_json:public_fields(JObj)))
-    ,?_assertEqual(kz_json:to_map(kz_json:public_fields(kz_json:delete_key(<<"used_by">>, OldJObj)))
+    ,?_assertEqual(kz_json:to_map(kz_json:public_fields(JObj))
                   ,kz_json:to_map(kz_json:public_fields(NewJObj)))
+    ,?_assertEqual(maps:remove(<<"e911">>, kz_json:to_map(kz_json:public_fields(JObj)))
+                  ,kz_json:to_map(kz_json:public_fields(kz_json:delete_key(<<"used_by">>, OldJObj))))
     ].
 
 
-features_old_5() ->
-    #{<<"dash_e911">> => #{
-        <<"caller_name">> => <<"Valued Customer">>,
-        <<"latitude">> => <<"40.05424">>,
-        <<"longitude">> => <<"-87.34416">>,
-        <<"legacy_data">> => #{
-            <<"house_number">> => <<"23">>,
-            <<"predirectional">> => <<"N">>,
-            <<"streetname">> => <<"MAIN ST">>
-           },
-        <<"locality">> => <<"PLEASANT SIDE">>,
-        <<"location_id">> => <<"32379723">>,
-        <<"plus_four">> => <<"8001">>,
-        <<"postal_code">> => <<"55359">>,
-        <<"region">> => <<"KZ">>,
-        <<"status">> => <<"PROVISIONED">>,
-        <<"street_address">> => <<"23 N MAIN ST">>
-       },
-      <<"inbound_cnam">> => #{<<"inbound_lookup">> => true},
-      <<"outbound_cnam">> => #{<<"display_name">> => <<"Bruce Wayne">>}
-     }.
-
-features_new_5() ->
-    {E911, M} = maps:take(<<"dash_e911">>, features_old_5()),
+features_5(OldJObj) ->
+    OldFeatures = kz_json:to_map(kz_json:get_value(<<"pvt_features">>, OldJObj)),
+    {E911, M} = maps:take(<<"dash_e911">>, OldFeatures),
     M#{<<"e911">> => E911}.
+    %% OldFeatures = #{<<"dash_e911">> := E911} =
+    %% OldFeatures#{<<"e911">> => E911}.
 
 public_fields_new_5(OldJObj) ->
-    ToDelete = [<<"dash_e911">>, <<"used_by">>],
     M = kz_json:to_map(
           kz_json:public_fields(
-            kz_json:delete_keys(ToDelete, OldJObj))),
-    maps:merge(features_new_5(), M).
+            kz_json:delete_key(<<"used_by">>, OldJObj))),
+    maps:merge(features_5(OldJObj), M).
 
 is_dirty5_test_() ->
     {ok, OldPN} = knm_phone_number:fetch(?TEST_OLD5_NUM),
@@ -468,9 +448,10 @@ is_dirty5_test_() ->
     ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, JObj)))
     ,?_assertEqual(true, is_integer(kz_json:get_value(<<"pvt_modified">>, NewJObj)))
 
-    ,?_assertEqual(features_old_5(), kz_json:to_map(kz_json:get_value(<<"pvt_features">>, OldJObj)))
-    ,?_assertEqual(features_new_5(), kz_json:to_map(kz_json:get_value(<<"pvt_features">>, JObj)))
-    ,?_assertEqual(features_new_5(), kz_json:to_map(kz_json:get_value(<<"pvt_features">>, NewJObj)))
+    ,?_assertEqual(features_5(OldJObj)
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, JObj)))
+    ,?_assertEqual(features_5(OldJObj)
+                  ,kz_json:to_map(kz_json:get_value(<<"pvt_features">>, NewJObj)))
 
     ,?_assertEqual(<<"trunkstore">>, kz_json:get_value(<<"used_by">>, OldJObj))
     ,?_assertEqual(undefined, kz_json:get_value(<<"used_by">>, JObj))

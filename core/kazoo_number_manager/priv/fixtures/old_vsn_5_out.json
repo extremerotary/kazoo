@@ -4,6 +4,23 @@
         "display_name": "Bruce Wayne",
         "inbound_lookup": true
     },
+    "dash_e911": {
+        "caller_name": "Valued Customer",
+        "latitude": "40.05424",
+        "legacy_data": {
+            "house_number": "23",
+            "predirectional": "N",
+            "streetname": "MAIN ST"
+        },
+        "locality": "PLEASANT SIDE",
+        "location_id": "32379723",
+        "longitude": "-87.34416",
+        "plus_four": "8001",
+        "postal_code": "55359",
+        "region": "KZ",
+        "status": "PROVISIONED",
+        "street_address": "23 N MAIN ST"
+    },
     "e911": {
         "caller_name": "Valued Customer",
         "latitude": "40.05424",
